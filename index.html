@@ -79,11 +79,22 @@
   /* Модальные окна */
   .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 2000; }
   .modal-overlay.active { display: flex; }
-  .modal { background: #2d2d2d; padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; position: relative; }
+  .modal { background: #2d2d2d; padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; position: relative; max-height: 90vh; overflow-y: auto; }
   .modal h3 { font-size: 24px; margin-bottom: 20px; color: #ff5722; }
   .modal .close-btn { position: absolute; top: 15px; right: 20px; background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
+  
   .sauce-option { background: #444; padding: 12px; margin-bottom: 10px; border-radius: 10px; cursor: pointer; transition: 0.2s; font-weight: bold; }
   .sauce-option:hover { background: #ff5722; }
+
+  /* Форма заказа */
+  .form-group { margin-bottom: 15px; text-align: left; }
+  .form-group label { display: block; margin-bottom: 5px; color: #ccc; font-size: 14px; }
+  .form-group input, .form-group textarea { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #555; background: #1a1a1a; color: #fff; font-size: 16px; }
+  .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #ff5722; }
+  .form-group input.error { border-color: #ff0000; background: rgba(255,0,0,0.1); }
+  .required-mark { color: #ff5722; }
+  .form-row { display: flex; gap: 10px; }
+  .form-row .form-group { flex: 1; }
 
   /* Корзина */
   .cart-modal { background: #2d2d2d; padding: 30px; border-radius: 20px; width: 90%; max-width: 500px; max-height: 80vh; overflow-y: auto; position: relative; }
@@ -134,10 +145,7 @@
 <section class="menu" id="menu">
   <h2 class="section-title">Наше <span>меню</span></h2>
   <p class="section-subtitle">Всё свежее, всё сочное</p>
-
-  <div class="menu-grid" id="menu-grid">
-    <!-- Карточки будут вставлены через JS -->
-  </div>
+  <div class="menu-grid" id="menu-grid"></div>
 </section>
 
 <section class="features" id="features">
@@ -175,6 +183,7 @@
     <div class="sauce-option" onclick="addToCartWithSauce('Сырный')">Сырный</div>
     <div class="sauce-option" onclick="addToCartWithSauce('Горчичный')">Горчичный</div>
     <div class="sauce-option" onclick="addToCartWithSauce('Барбекю')">Барбекю</div>
+    <div class="sauce-option" style="background: transparent; border: 1px dashed #777; margin-top: 10px;" onclick="addToCartWithSauce('Без соуса')">Без соуса</div>
   </div>
 </div>
 
@@ -185,14 +194,62 @@
     <h3>Ваша корзина</h3>
     <div id="cart-items"></div>
     <div class="cart-total" id="cart-total" style="display:none;">Итого: <span>0</span> ₽</div>
-    <button class="btn" style="width: 100%; margin-top: 20px;" onclick="orderCheckout()">Оформить заказ</button>
+    <button class="btn" style="width: 100%; margin-top: 20px;" onclick="openCheckoutModal()">Оформить заказ</button>
+  </div>
+</div>
+
+<!-- Окно формы заказа (Оформление) -->
+<div class="modal-overlay" id="checkout-modal">
+  <div class="modal" style="text-align: left; max-width: 450px;">
+    <button class="close-btn" onclick="closeCheckoutModal()">×</button>
+    <h3 style="text-align: center;">Оформление заказа</h3>
+    <p style="color:#ccc; font-size: 14px; text-align: center; margin-bottom: 20px;">Заполните данные для доставки</p>
+    
+    <div class="form-group">
+      <label>Ваше имя <span class="required-mark">*</span></label>
+      <input type="text" id="order-name" placeholder="Иван">
+    </div>
+    <div class="form-group">
+      <label>Телефон для связи <span class="required-mark">*</span></label>
+      <input type="tel" id="order-phone" placeholder="+7 (999) 999-99-99">
+    </div>
+    <div class="form-group">
+      <label>Улица, дом <span class="required-mark">*</span></label>
+      <input type="text" id="order-street" placeholder="ул. Ленина, д. 10">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Квартира</label>
+        <input type="text" id="order-flat" placeholder="12">
+      </div>
+      <div class="form-group">
+        <label>Этаж</label>
+        <input type="text" id="order-floor" placeholder="3">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Комментарий к заказу</label>
+      <textarea id="order-comment" rows="2" placeholder="Позвонить за 10 минут..."></textarea>
+    </div>
+
+    <div style="font-size: 18px; font-weight: bold; margin-bottom: 20px; text-align: center; color: #ff5722;">
+      Сумма: <span id="checkout-total">0</span> ₽
+    </div>
+
+    <button class="btn" style="width: 100%;" onclick="submitOrder()">Заказать</button>
   </div>
 </div>
 
 <div class="notification" id="notification"></div>
 
 <script>
-  // Данные о товарах
+  // ==========================================
+  // ВАЖНО: ВСТАВЬ СВОИ ДАННЫЕ СЮДА!
+  // ==========================================
+  const BOT_TOKEN = 'ТВОЙ_ТОКЕН_ИЗ_BOTFATHER'; // Например: '7213456789:AAH...'
+  const CHAT_ID = 'ТВОЙ_ID_ИЗ_USERINFOBOT';   // Например: '123456789'
+  // ==========================================
+
   const products = [
     { id: 1, name: 'Шаурма классическая', desc: 'Курица, капуста, огурец, помидор, фирменный соус', price: 250, img: '🌯' },
     { id: 2, name: 'Шаурма острая', desc: 'Курица, халапеньо, острый соус, лук, специи', price: 280, img: '🔥' },
@@ -205,7 +262,6 @@
   let cart = [];
   let currentProductId = null;
 
-  // Отрисовка меню
   function renderMenu() {
     const grid = document.getElementById('menu-grid');
     grid.innerHTML = '';
@@ -213,7 +269,6 @@
       const card = document.createElement('div');
       card.className = 'card';
       card.setAttribute('data-id', p.id);
-      // Делаем всю карточку кликабельной для выбора соуса
       card.innerHTML = `
         <div class="card-img">${p.img}</div>
         <div class="card-body">
@@ -228,22 +283,17 @@
           </div>
         </div>
       `;
-      // Если нажать на саму карточку (не на кнопку) — тоже открываем выбор соуса
       card.onclick = () => openSauceModal(p.id);
       grid.appendChild(card);
     });
   }
 
-  // Открытие окна выбора соуса
   function openSauceModal(id) {
-    const product = products.find(p => p.id === id);
-    
-    // Для картофеля и напитков соус не нужен
-    if (id === 5 || id === 6) {
+    if (id === 5 || id === 6) { // Для картошки и напитков сразу добавляем
       addToCart(id, 'Без соуса');
       return;
     }
-
+    const product = products.find(p => p.id === id);
     currentProductId = id;
     document.getElementById('sauce-dish-name').textContent = product.name;
     document.getElementById('sauce-modal').classList.add('active');
@@ -253,17 +303,13 @@
     document.getElementById('sauce-modal').classList.remove('active');
   }
 
-  // Добавление в корзину с выбранным соусом
   function addToCartWithSauce(sauce) {
     addToCart(currentProductId, sauce);
     closeSauceModal();
   }
 
-  // Логика добавления в корзину
   function addToCart(id, sauce) {
     const product = products.find(p => p.id === id);
-    
-    // Ищем, есть ли уже такой товар с таким же соусом
     const existingItem = cart.find(item => item.id === id && item.sauce === sauce);
 
     if (existingItem) {
@@ -271,18 +317,14 @@
     } else {
       cart.push({ ...product, sauce: sauce, qty: 1 });
     }
-
     updateUI();
     showNotification('Добавлено в корзину ✓');
   }
 
-  // Обновление интерфейса (счетчик в корзине и счетчики на карточках)
   function updateUI() {
-    // Счетчик в шапке
     const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
     document.getElementById('cart-count').textContent = totalCount;
 
-    // Счетчики на карточках
     products.forEach(p => {
       const count = cart.filter(item => item.id === p.id).reduce((sum, item) => sum + item.qty, 0);
       const counterEl = document.getElementById(`counter-${p.id}`);
@@ -297,7 +339,6 @@
     });
   }
 
-  // Открытие корзины
   function openCart() {
     const cartItemsDiv = document.getElementById('cart-items');
     const cartTotalDiv = document.getElementById('cart-total');
@@ -306,9 +347,10 @@
     if (cart.length === 0) {
       cartItemsDiv.innerHTML = '<div class="cart-empty">Ваша корзина пуста 😔</div>';
       cartTotalDiv.style.display = 'none';
+      document.querySelector('.cart-modal .btn').style.display = 'none'; // скрываем кнопку оформления
     } else {
       let total = 0;
-      cart.forEach((item, index) => {
+      cart.forEach((item) => {
         total += item.price * item.qty;
         const itemEl = document.createElement('div');
         itemEl.className = 'cart-item';
@@ -323,8 +365,8 @@
       });
       cartTotalDiv.style.display = 'block';
       cartTotalDiv.innerHTML = `Итого: <span>${total}</span> ₽`;
+      document.querySelector('.cart-modal .btn').style.display = 'block'; // показываем кнопку
     }
-
     document.getElementById('cart-modal').classList.add('active');
   }
 
@@ -332,43 +374,113 @@
     document.getElementById('cart-modal').classList.remove('active');
   }
 
-  // Оформление заказа (перевод в WhatsApp)
-  function orderCheckout() {
-    if (cart.length === 0) {
-      showNotification('Корзина пуста!');
-      return;
-    }
+  // Открытие формы заказа
+  function openCheckoutModal() {
+    closeCart();
     
-    let message = "Здравствуйте! Хочу сделать заказ в Шаурма 24:\n\n";
-    let total = 0;
+    // Считаем сумму для формы
+    let total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    document.getElementById('checkout-total').textContent = total;
+
+    // Очищаем поля от прошлых ошибок
+    document.querySelectorAll('#checkout-modal input').forEach(input => input.classList.remove('error'));
     
-    cart.forEach(item => {
-      message += `- ${item.name} (${item.qty} шт) [Соус: ${item.sauce}] = ${item.price * item.qty}₽\n`;
-      total += item.price * item.qty;
-    });
-    
-    message += `\nИтого: ${total}₽`;
-    
-    // Переводим на WhatsApp с номером из сайта
-    const encodedMsg = encodeURIComponent(message);
-    window.open(`https://wa.me/79394782936?text=${encodedMsg}`, '_blank');
+    document.getElementById('checkout-modal').classList.add('active');
   }
 
-  // Всплывающее уведомление
+  function closeCheckoutModal() {
+    document.getElementById('checkout-modal').classList.remove('active');
+  }
+
+  // Отправка в Telegram
+  async function submitOrder() {
+    const name = document.getElementById('order-name').value.trim();
+    const phone = document.getElementById('order-phone').value.trim();
+    const street = document.getElementById('order-street').value.trim();
+    const flat = document.getElementById('order-flat').value.trim();
+    const floor = document.getElementById('order-floor').value.trim();
+    const comment = document.getElementById('order-comment').value.trim();
+
+    // Проверка обязательных полей
+    let hasError = false;
+    if (!name) { document.getElementById('order-name').classList.add('error'); hasError = true; }
+    if (!phone) { document.getElementById('order-phone').classList.add('error'); hasError = true; }
+    if (!street) { document.getElementById('order-street').classList.add('error'); hasError = true; }
+
+    if (hasError) {
+      showNotification('Заполните обязательные поля!');
+      return;
+    }
+
+    // Сборка текста заказа
+    let message = `🔥 <b>НОВЫЙ ЗАКАЗ</b> 🔥\n\n`;
+    message += `👤 <b>Имя:</b> ${name}\n`;
+    message += `📞 <b>Телефон:</b> ${phone}\n`;
+    message += `📍 <b>Адрес:</b> ${street}`;
+    if (flat) message += `, кв. ${flat}`;
+    if (floor) message += `, этаж ${floor}`;
+    message += `\n`;
+    if (comment) message += `💬 <b>Комментарий:</b> ${comment}\n`;
+    message += `\n🍔 <b>Состав заказа:</b>\n`;
+
+    let total = 0;
+    cart.forEach(item => {
+      message += `• ${item.name} (${item.qty} шт) [Соус: ${item.sauce}] = ${item.price * item.qty} ₽\n`;
+      total += item.price * item.qty;
+    });
+    message += `\n💰 <b>Итого:</b> ${total} ₽`;
+
+    // Блокируем кнопку
+    const btn = document.querySelector('#checkout-modal .btn');
+    const originalText = btn.textContent;
+    btn.textContent = 'Отправка...';
+    btn.disabled = true;
+
+    try {
+      // Запрос к API Telegram
+      const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: CHAT_ID,
+          text: message,
+          parse_mode: 'HTML'
+        })
+      });
+
+      if (response.ok) {
+        // Успех
+        closeCheckoutModal();
+        showNotification('Заказ успешно отправлен!');
+        cart = []; // Очищаем корзину
+        updateUI();
+        // Очищаем форму
+        document.querySelectorAll('#checkout-modal input, #checkout-modal textarea').forEach(el => el.value = '');
+      } else {
+        throw new Error('Ошибка Telegram');
+      }
+    } catch (error) {
+      showNotification('Ошибка отправки. Позвоните нам!');
+      console.error(error);
+    } finally {
+      // Возвращаем кнопку в исходное состояние
+      btn.textContent = originalText;
+      btn.disabled = false;
+    }
+  }
+
   function showNotification(text) {
     const n = document.getElementById('notification');
     n.textContent = text;
     n.classList.add('show');
-    setTimeout(() => n.classList.remove('show'), 2000);
+    setTimeout(() => n.classList.remove('show'), 3000);
   }
 
-  // Закрытие модальных окон по клику вне контента
-  document.getElementById('sauce-modal').addEventListener('click', (e) => {
-    if (e.target.id === 'sauce-modal') closeSauceModal();
-  });
-  document.getElementById('cart-modal').addEventListener('click', (e) => {
-    if (e.target.id === 'cart-modal') closeCart();
-  });
+  // Закрытие окон кликом по фону
+  document.getElementById('sauce-modal').addEventListener('click', (e) => { if (e.target.id === 'sauce-modal') closeSauceModal(); });
+  document.getElementById('cart-modal').addEventListener('click', (e) => { if (e.target.id === 'cart-modal') closeCart(); });
+  document.getElementById('checkout-modal').addEventListener('click', (e) => { if (e.target.id === 'checkout-modal') closeCheckoutModal(); });
 
   // Плавная прокрутка
   document.querySelectorAll('a[href^="#"]').forEach(link => {
@@ -379,7 +491,6 @@
     });
   });
 
-  // Инициализация
   renderMenu();
 </script>
 

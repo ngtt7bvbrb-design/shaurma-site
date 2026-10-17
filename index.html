@@ -5,402 +5,103 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Шаурма 24 — Вкусно и круглосуточно</title>
 <style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-  }
-
-  body {
-    background: #1a1a1a;
-    color: #fff;
-    overflow-x: hidden;
-  }
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+  body { background: #1a1a1a; color: #fff; overflow-x: hidden; }
 
   /* Header */
-  header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    background: rgba(26, 26, 26, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 15px 5%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 1000;
-    border-bottom: 2px solid #ff5722;
-  }
+  header { position: fixed; top: 0; width: 100%; background: rgba(26, 26, 26, 0.95); backdrop-filter: blur(10px); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 2px solid #ff5722; }
+  .logo { font-size: 28px; font-weight: 900; color: #ff5722; letter-spacing: 1px; }
+  .logo span { color: #fff; }
+  nav ul { display: flex; list-style: none; gap: 30px; }
+  nav a { color: #fff; text-decoration: none; font-weight: 500; transition: color 0.3s; }
+  nav a:hover { color: #ff5722; }
+  .phone { color: #ff5722; font-weight: 700; font-size: 18px; text-decoration: none; }
+  .phone:hover { text-decoration: underline; }
 
-  .logo {
-    font-size: 28px;
-    font-weight: 900;
-    color: #ff5722;
-    letter-spacing: 1px;
-  }
-
-  .logo span {
-    color: #fff;
-  }
-
-  nav ul {
-    display: flex;
-    list-style: none;
-    gap: 30px;
-  }
-
-  nav a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s;
-  }
-
-  nav a:hover {
-    color: #ff5722;
-  }
-
-  .phone {
-    color: #ff5722;
-    font-weight: 700;
-    font-size: 18px;
-  }
+  .cart-btn { background: #ff5722; color: #fff; border: none; padding: 10px 20px; border-radius: 30px; font-weight: 700; cursor: pointer; margin-left: 15px; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+  .cart-btn:hover { background: #e64a19; }
+  .cart-count { background: #fff; color: #ff5722; border-radius: 50%; padding: 2px 8px; font-size: 14px; font-weight: 900; }
 
   /* Hero */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 100px 20px 40px;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d1810 100%);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero::before {
-    content: '🌯';
-    position: absolute;
-    font-size: 500px;
-    opacity: 0.05;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    animation: rotate 20s linear infinite;
-  }
-
-  @keyframes rotate {
-    from { transform: translate(-50%, -50%) rotate(0deg); }
-    to { transform: translate(-50%, -50%) rotate(360deg); }
-  }
-
-  .hero-content {
-    position: relative;
-    z-index: 2;
-    max-width: 800px;
-  }
-
-  .hero h1 {
-    font-size: clamp(40px, 8vw, 80px);
-    font-weight: 900;
-    margin-bottom: 20px;
-    line-height: 1.1;
-  }
-
-  .hero h1 span {
-    color: #ff5722;
-  }
-
-  .hero p {
-    font-size: clamp(16px, 3vw, 22px);
-    color: #ccc;
-    margin-bottom: 40px;
-  }
-
-  .badge {
-    display: inline-block;
-    background: #ff5722;
-    color: #fff;
-    padding: 8px 20px;
-    border-radius: 30px;
-    font-weight: 700;
-    margin-bottom: 30px;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-  }
-
-  .btn {
-    display: inline-block;
-    padding: 18px 45px;
-    background: #ff5722;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 50px;
-    font-weight: 700;
-    font-size: 18px;
-    transition: all 0.3s;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 10px 30px rgba(255, 87, 34, 0.4);
-  }
-
-  .btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(255, 87, 34, 0.6);
-  }
+  .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 100px 20px 40px; background: linear-gradient(135deg, #1a1a1a 0%, #2d1810 100%); position: relative; overflow: hidden; }
+  .hero::before { content: '🌯'; position: absolute; font-size: 500px; opacity: 0.05; top: 50%; left: 50%; transform: translate(-50%, -50%); animation: rotate 20s linear infinite; }
+  @keyframes rotate { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+  .hero-content { position: relative; z-index: 2; max-width: 800px; }
+  .hero h1 { font-size: clamp(40px, 8vw, 80px); font-weight: 900; margin-bottom: 20px; line-height: 1.1; }
+  .hero h1 span { color: #ff5722; }
+  .hero p { font-size: clamp(16px, 3vw, 22px); color: #ccc; margin-bottom: 40px; }
+  .badge { display: inline-block; background: #ff5722; color: #fff; padding: 8px 20px; border-radius: 30px; font-weight: 700; margin-bottom: 30px; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+  .btn { display: inline-block; padding: 18px 45px; background: #ff5722; color: #fff; text-decoration: none; border-radius: 50px; font-weight: 700; font-size: 18px; transition: all 0.3s; border: none; cursor: pointer; box-shadow: 0 10px 30px rgba(255, 87, 34, 0.4); }
+  .btn:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(255, 87, 34, 0.6); }
 
   /* Menu */
-  .menu {
-    padding: 100px 5%;
-    background: #222;
-  }
+  .menu { padding: 100px 5%; background: #222; }
+  .section-title { text-align: center; font-size: clamp(32px, 5vw, 48px); margin-bottom: 15px; font-weight: 900; }
+  .section-title span { color: #ff5722; }
+  .section-subtitle { text-align: center; color: #999; margin-bottom: 60px; font-size: 18px; }
+  .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
 
-  .section-title {
-    text-align: center;
-    font-size: clamp(32px, 5vw, 48px);
-    margin-bottom: 15px;
-    font-weight: 900;
-  }
-
-  .section-title span {
-    color: #ff5722;
-  }
-
-  .section-subtitle {
-    text-align: center;
-    color: #999;
-    margin-bottom: 60px;
-    font-size: 18px;
-  }
-
-  .menu-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .card {
-    background: #2d2d2d;
-    border-radius: 20px;
-    overflow: hidden;
-    transition: transform 0.3s, box-shadow 0.3s;
-    border: 2px solid transparent;
-  }
-
-  .card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 50px rgba(255, 87, 34, 0.3);
-    border-color: #ff5722;
-  }
-
-  .card-img {
-    height: 200px;
-    background: linear-gradient(135deg, #ff5722, #ff9800);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 90px;
-  }
-
-  .card-body {
-    padding: 25px;
-  }
-
-  .card h3 {
-    font-size: 22px;
-    margin-bottom: 10px;
-  }
-
-  .card p {
-    color: #999;
-    font-size: 14px;
-    margin-bottom: 20px;
-    line-height: 1.5;
-  }
-
-  .card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .price {
-    font-size: 26px;
-    font-weight: 900;
-    color: #ff5722;
-  }
-
-  .price small {
-    font-size: 14px;
-    color: #999;
-    font-weight: 400;
-  }
-
-  .add-btn {
-    background: #ff5722;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 30px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-
-  .add-btn:hover {
-    background: #e64a19;
-  }
+  .card { background: #2d2d2d; border-radius: 20px; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; border: 2px solid transparent; cursor: pointer; }
+  .card:hover { transform: translateY(-10px); box-shadow: 0 20px 50px rgba(255, 87, 34, 0.3); border-color: #ff5722; }
+  .card-img { height: 200px; background: linear-gradient(135deg, #ff5722, #ff9800); display: flex; align-items: center; justify-content: center; font-size: 90px; }
+  .card-body { padding: 25px; }
+  .card h3 { font-size: 22px; margin-bottom: 10px; }
+  .card p { color: #999; font-size: 14px; margin-bottom: 20px; line-height: 1.5; }
+  .card-footer { display: flex; justify-content: space-between; align-items: center; }
+  .price { font-size: 26px; font-weight: 900; color: #ff5722; }
+  .price small { font-size: 14px; color: #999; font-weight: 400; }
+  
+  .add-btn { background: #ff5722; color: #fff; border: none; padding: 10px 20px; border-radius: 30px; font-weight: 700; cursor: pointer; transition: background 0.3s; }
+  .add-btn:hover { background: #e64a19; }
+  .item-counter { display: inline-block; background: #444; color: #fff; padding: 5px 10px; border-radius: 15px; font-size: 14px; font-weight: bold; margin-left: 10px; }
 
   /* Features */
-  .features {
-    padding: 100px 5%;
-    background: #1a1a1a;
-  }
-
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .feature {
-    text-align: center;
-    padding: 40px 20px;
-    background: #2d2d2d;
-    border-radius: 20px;
-    transition: transform 0.3s;
-  }
-
-  .feature:hover {
-    transform: scale(1.05);
-  }
-
-  .feature-icon {
-    font-size: 60px;
-    margin-bottom: 20px;
-  }
-
-  .feature h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-    color: #ff5722;
-  }
-
-  .feature p {
-    color: #999;
-    font-size: 15px;
-    line-height: 1.5;
-  }
+  .features { padding: 100px 5%; background: #1a1a1a; }
+  .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+  .feature { text-align: center; padding: 40px 20px; background: #2d2d2d; border-radius: 20px; transition: transform 0.3s; }
+  .feature:hover { transform: scale(1.05); }
+  .feature-icon { font-size: 60px; margin-bottom: 20px; }
+  .feature h3 { font-size: 20px; margin-bottom: 10px; color: #ff5722; }
+  .feature p { color: #999; font-size: 15px; line-height: 1.5; }
 
   /* Contact */
-  .contact {
-    padding: 100px 5%;
-    background: linear-gradient(135deg, #2d1810 0%, #1a1a1a 100%);
-    text-align: center;
-  }
+  .contact { padding: 100px 5%; background: linear-gradient(135deg, #2d1810 0%, #1a1a1a 100%); text-align: center; }
+  .contact-info { display: flex; justify-content: center; flex-wrap: wrap; gap: 40px; margin-top: 50px; }
+  .contact-item { background: rgba(255, 87, 34, 0.1); border: 2px solid #ff5722; padding: 30px 40px; border-radius: 20px; min-width: 250px; }
+  .contact-item .icon { font-size: 40px; margin-bottom: 15px; }
+  .contact-item h4 { color: #ff5722; margin-bottom: 10px; font-size: 18px; }
+  .contact-item p { color: #ccc; font-size: 16px; }
 
-  .contact-info {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 40px;
-    margin-top: 50px;
-  }
+  footer { background: #000; padding: 40px 5%; text-align: center; border-top: 2px solid #ff5722; }
+  footer p { color: #666; margin-top: 10px; }
 
-  .contact-item {
-    background: rgba(255, 87, 34, 0.1);
-    border: 2px solid #ff5722;
-    padding: 30px 40px;
-    border-radius: 20px;
-    min-width: 250px;
-  }
+  /* Модальные окна */
+  .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 2000; }
+  .modal-overlay.active { display: flex; }
+  .modal { background: #2d2d2d; padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; position: relative; }
+  .modal h3 { font-size: 24px; margin-bottom: 20px; color: #ff5722; }
+  .modal .close-btn { position: absolute; top: 15px; right: 20px; background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
+  .sauce-option { background: #444; padding: 12px; margin-bottom: 10px; border-radius: 10px; cursor: pointer; transition: 0.2s; font-weight: bold; }
+  .sauce-option:hover { background: #ff5722; }
 
-  .contact-item .icon {
-    font-size: 40px;
-    margin-bottom: 15px;
-  }
+  /* Корзина */
+  .cart-modal { background: #2d2d2d; padding: 30px; border-radius: 20px; width: 90%; max-width: 500px; max-height: 80vh; overflow-y: auto; position: relative; }
+  .cart-modal h3 { font-size: 24px; margin-bottom: 20px; color: #ff5722; text-align: center; }
+  .cart-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #444; padding: 15px 0; }
+  .cart-item-info h4 { font-size: 16px; margin-bottom: 5px; }
+  .cart-item-info p { font-size: 14px; color: #999; }
+  .cart-item-price { font-weight: bold; color: #ff5722; font-size: 18px; }
+  .cart-total { text-align: right; font-size: 20px; font-weight: bold; margin-top: 20px; padding-top: 20px; border-top: 2px solid #ff5722; }
+  .cart-empty { text-align: center; color: #999; padding: 20px 0; }
 
-  .contact-item h4 {
-    color: #ff5722;
-    margin-bottom: 10px;
-    font-size: 18px;
-  }
+  .notification { position: fixed; bottom: 30px; right: 30px; background: #ff5722; color: #fff; padding: 20px 30px; border-radius: 15px; font-weight: 700; transform: translateY(200%); transition: transform 0.4s; z-index: 3000; box-shadow: 0 10px 30px rgba(255, 87, 34, 0.5); }
+  .notification.show { transform: translateY(0); }
 
-  .contact-item p {
-    color: #ccc;
-    font-size: 16px;
-  }
-
-  /* Footer */
-  footer {
-    background: #000;
-    padding: 40px 5%;
-    text-align: center;
-    border-top: 2px solid #ff5722;
-  }
-
-  footer p {
-    color: #666;
-    margin-top: 10px;
-  }
-
-  footer .logo {
-    margin-bottom: 15px;
-  }
-
-  /* Mobile */
   @media (max-width: 768px) {
-    nav ul {
-      display: none;
-    }
-    .phone {
-      font-size: 14px;
-    }
-    .hero::before {
-      font-size: 300px;
-    }
-  }
-
-  /* Cart badge */
-  .cart-btn {
-    background: #ff5722;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 30px;
-    font-weight: 700;
-    cursor: pointer;
-    margin-left: 15px;
-  }
-
-  /* Notification */
-  .notification {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: #ff5722;
-    color: #fff;
-    padding: 20px 30px;
-    border-radius: 15px;
-    font-weight: 700;
-    transform: translateY(200%);
-    transition: transform 0.4s;
-    z-index: 2000;
-    box-shadow: 0 10px 30px rgba(255, 87, 34, 0.5);
-  }
-
-  .notification.show {
-    transform: translateY(0);
+    nav ul { display: none; }
+    .phone { font-size: 14px; }
+    .hero::before { font-size: 300px; }
   }
 </style>
 </head>
@@ -416,12 +117,11 @@
     </ul>
   </nav>
   <div style="display:flex; align-items:center;">
-    <span class="phone">📞 8 (800) 24-24-24</span>
-    <button class="cart-btn" onclick="showNotification('Корзина пока пуста 🛒')">🛒</button>
+    <a href="tel:+79394782936" class="phone">📞 +7 (939) 478-29-36</a>
+    <button class="cart-btn" onclick="openCart()">🛒 <span class="cart-count" id="cart-count">0</span></button>
   </div>
 </header>
 
-<!-- Hero -->
 <section class="hero">
   <div class="hero-content">
     <div class="badge">🕐 РАБОТАЕМ 24/7</div>
@@ -431,148 +131,230 @@
   </div>
 </section>
 
-<!-- Menu -->
 <section class="menu" id="menu">
   <h2 class="section-title">Наше <span>меню</span></h2>
   <p class="section-subtitle">Всё свежее, всё сочное</p>
 
-  <div class="menu-grid">
-    <div class="card">
-      <div class="card-img">🌯</div>
-      <div class="card-body">
-        <h3>Шаурма классическая</h3>
-        <p>Курица, капуста, огурец, помидор, фирменный соус в лаваше</p>
-        <div class="card-footer">
-          <div class="price">250 <small>₽</small></div>
-          <button class="add-btn" onclick="showNotification('Добавлено в корзину ✓')">В корзину</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-img">🔥</div>
-      <div class="card-body">
-        <h3>Шаурма острая</h3>
-        <p>Курица, халапеньо, острый соус, лук, специи — для смелых</p>
-        <div class="card-footer">
-          <div class="price">280 <small>₽</small></div>
-          <button class="add-btn" onclick="showNotification('Добавлено в корзину ✓')">В корзину</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-img">👑</div>
-      <div class="card-body">
-        <h3>Шаурма люкс</h3>
-        <p>Двойное мясо, сыр, бекон, свежие овощи и два соуса</p>
-        <div class="card-footer">
-          <div class="price">350 <small>₽</small></div>
-          <button class="add-btn" onclick="showNotification('Добавлено в корзину ✓')">В корзину</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-img">🥙</div>
-      <div class="card-body">
-        <h3>Люля в лаваше</h3>
-        <p>Люля-кебаб из говядины, овощи, зелень, соус чесночный</p>
-        <div class="card-footer">
-          <div class="price">320 <small>₽</small></div>
-          <button class="add-btn" onclick="showNotification('Добавлено в корзину ✓')">В корзину</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-img">🍟</div>
-      <div class="card-body">
-        <h3>Картофель фри</h3>
-        <p>Хрустящий картофель с соусом на выбор</p>
-        <div class="card-footer">
-          <div class="price">150 <small>₽</small></div>
-          <button class="add-btn" onclick="showNotification('Добавлено в корзину ✓')">В корзину</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-img">🥤</div>
-      <div class="card-body">
-        <h3>Напитки</h3>
-        <p>Кола, лимонад, айран, сок — охлаждённые</p>
-        <div class="card-footer">
-          <div class="price">100 <small>₽</small></div>
-          <button class="add-btn" onclick="showNotification('Добавлено в корзину ✓')">В корзину</button>
-        </div>
-      </div>
-    </div>
+  <div class="menu-grid" id="menu-grid">
+    <!-- Карточки будут вставлены через JS -->
   </div>
 </section>
 
-<!-- Features -->
 <section class="features" id="features">
   <h2 class="section-title">Почему <span>мы</span></h2>
   <p class="section-subtitle">Нас выбирают тысячи голодных</p>
-
   <div class="features-grid">
-    <div class="feature">
-      <div class="feature-icon">🕐</div>
-      <h3>24/7</h3>
-      <p>Работаем круглосуточно — без выходных и перерывов</p>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">⚡</div>
-      <h3>5 минут</h3>
-      <p>Готовим за 5 минут — даже в час пик</p>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">🥩</div>
-      <h3>Свежее мясо</h3>
-      <p>Только охлаждённое мясо, никакой заморозки</p>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">🚀</div>
-      <h3>Доставка</h3>
-      <p>Бесплатная доставка от 500 ₽ по городу</p>
-    </div>
+    <div class="feature"><div class="feature-icon">🕐</div><h3>24/7</h3><p>Работаем круглосуточно — без выходных и перерывов</p></div>
+    <div class="feature"><div class="feature-icon">⚡</div><h3>5 минут</h3><p>Готовим за 5 минут — даже в час пик</p></div>
+    <div class="feature"><div class="feature-icon">🥩</div><h3>Свежее мясо</h3><p>Только охлаждённое мясо, никакой заморозки</p></div>
+    <div class="feature"><div class="feature-icon">🚀</div><h3>Доставка</h3><p>Бесплатная доставка от 500 ₽ по городу</p></div>
   </div>
 </section>
 
-<!-- Contact -->
 <section class="contact" id="contact">
   <h2 class="section-title">Как нас <span>найти</span></h2>
   <p class="section-subtitle">Ждём вас в любое время суток</p>
-
   <div class="contact-info">
-    <div class="contact-item">
-      <div class="icon">📍</div>
-      <h4>Адрес</h4>
-      <p>г. Москва, ул. Ленина, 24</p>
-    </div>
-    <div class="contact-item">
-      <div class="icon">📞</div>
-      <h4>Телефон</h4>
-      <p>8 (800) 24-24-24</p>
-    </div>
-    <div class="contact-item">
-      <div class="icon">🕐</div>
-      <h4>Режим работы</h4>
-      <p>Круглосуточно, 24/7</p>
-    </div>
+    <div class="contact-item"><div class="icon">📍</div><h4>Адрес</h4><p>г. Москва, ул. Ленина, 24</p></div>
+    <div class="contact-item"><div class="icon">📞</div><h4>Телефон</h4><p>+7 (939) 478-29-36</p></div>
+    <div class="contact-item"><div class="icon">🕐</div><h4>Режим работы</h4><p>Круглосуточно, 24/7</p></div>
   </div>
 </section>
 
 <footer>
   <div class="logo">ШАУРМА<span>24</span></div>
   <p>© 2024 Шаурма 24. Все права защищены.</p>
-  <p style="font-size: 12px; margin-top: 10px;">Вкусно, быстро, круглосуточно 🌯</p>
 </footer>
 
-<div class="notification" id="notification">Добавлено в корзину ✓</div>
+<!-- Окно выбора соуса -->
+<div class="modal-overlay" id="sauce-modal">
+  <div class="modal">
+    <button class="close-btn" onclick="closeSauceModal()">×</button>
+    <h3>Выберите соус</h3>
+    <p style="color:#999; margin-bottom: 20px; font-size: 14px;" id="sauce-dish-name"></p>
+    <div class="sauce-option" onclick="addToCartWithSauce('Сырный')">Сырный</div>
+    <div class="sauce-option" onclick="addToCartWithSauce('Горчичный')">Горчичный</div>
+    <div class="sauce-option" onclick="addToCartWithSauce('Барбекю')">Барбекю</div>
+  </div>
+</div>
+
+<!-- Окно корзины -->
+<div class="modal-overlay" id="cart-modal">
+  <div class="cart-modal">
+    <button class="close-btn" onclick="closeCart()">×</button>
+    <h3>Ваша корзина</h3>
+    <div id="cart-items"></div>
+    <div class="cart-total" id="cart-total" style="display:none;">Итого: <span>0</span> ₽</div>
+    <button class="btn" style="width: 100%; margin-top: 20px;" onclick="orderCheckout()">Оформить заказ</button>
+  </div>
+</div>
+
+<div class="notification" id="notification"></div>
 
 <script>
+  // Данные о товарах
+  const products = [
+    { id: 1, name: 'Шаурма классическая', desc: 'Курица, капуста, огурец, помидор, фирменный соус', price: 250, img: '🌯' },
+    { id: 2, name: 'Шаурма острая', desc: 'Курица, халапеньо, острый соус, лук, специи', price: 280, img: '🔥' },
+    { id: 3, name: 'Шаурма люкс', desc: 'Двойное мясо, сыр, бекон, свежие овощи', price: 350, img: '👑' },
+    { id: 4, name: 'Люля в лаваше', desc: 'Люля-кебаб из говядины, овощи, зелень', price: 320, img: '🥙' },
+    { id: 5, name: 'Картофель фри', desc: 'Хрустящий картофель с соусом на выбор', price: 150, img: '🍟' },
+    { id: 6, name: 'Напитки', desc: 'Кола, лимонад, айран, сок — охлаждённые', price: 100, img: '🥤' }
+  ];
+
+  let cart = [];
+  let currentProductId = null;
+
+  // Отрисовка меню
+  function renderMenu() {
+    const grid = document.getElementById('menu-grid');
+    grid.innerHTML = '';
+    products.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.setAttribute('data-id', p.id);
+      // Делаем всю карточку кликабельной для выбора соуса
+      card.innerHTML = `
+        <div class="card-img">${p.img}</div>
+        <div class="card-body">
+          <h3>${p.name}</h3>
+          <p>${p.desc}</p>
+          <div class="card-footer">
+            <div class="price">${p.price} <small>₽</small></div>
+            <div>
+              <button class="add-btn" onclick="event.stopPropagation(); openSauceModal(${p.id})">В корзину</button>
+              <span class="item-counter" id="counter-${p.id}" style="display:none;">0 шт</span>
+            </div>
+          </div>
+        </div>
+      `;
+      // Если нажать на саму карточку (не на кнопку) — тоже открываем выбор соуса
+      card.onclick = () => openSauceModal(p.id);
+      grid.appendChild(card);
+    });
+  }
+
+  // Открытие окна выбора соуса
+  function openSauceModal(id) {
+    const product = products.find(p => p.id === id);
+    
+    // Для картофеля и напитков соус не нужен
+    if (id === 5 || id === 6) {
+      addToCart(id, 'Без соуса');
+      return;
+    }
+
+    currentProductId = id;
+    document.getElementById('sauce-dish-name').textContent = product.name;
+    document.getElementById('sauce-modal').classList.add('active');
+  }
+
+  function closeSauceModal() {
+    document.getElementById('sauce-modal').classList.remove('active');
+  }
+
+  // Добавление в корзину с выбранным соусом
+  function addToCartWithSauce(sauce) {
+    addToCart(currentProductId, sauce);
+    closeSauceModal();
+  }
+
+  // Логика добавления в корзину
+  function addToCart(id, sauce) {
+    const product = products.find(p => p.id === id);
+    
+    // Ищем, есть ли уже такой товар с таким же соусом
+    const existingItem = cart.find(item => item.id === id && item.sauce === sauce);
+
+    if (existingItem) {
+      existingItem.qty += 1;
+    } else {
+      cart.push({ ...product, sauce: sauce, qty: 1 });
+    }
+
+    updateUI();
+    showNotification('Добавлено в корзину ✓');
+  }
+
+  // Обновление интерфейса (счетчик в корзине и счетчики на карточках)
+  function updateUI() {
+    // Счетчик в шапке
+    const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+    document.getElementById('cart-count').textContent = totalCount;
+
+    // Счетчики на карточках
+    products.forEach(p => {
+      const count = cart.filter(item => item.id === p.id).reduce((sum, item) => sum + item.qty, 0);
+      const counterEl = document.getElementById(`counter-${p.id}`);
+      if (counterEl) {
+        if (count > 0) {
+          counterEl.textContent = `${count} шт`;
+          counterEl.style.display = 'inline-block';
+        } else {
+          counterEl.style.display = 'none';
+        }
+      }
+    });
+  }
+
+  // Открытие корзины
+  function openCart() {
+    const cartItemsDiv = document.getElementById('cart-items');
+    const cartTotalDiv = document.getElementById('cart-total');
+    cartItemsDiv.innerHTML = '';
+
+    if (cart.length === 0) {
+      cartItemsDiv.innerHTML = '<div class="cart-empty">Ваша корзина пуста 😔</div>';
+      cartTotalDiv.style.display = 'none';
+    } else {
+      let total = 0;
+      cart.forEach((item, index) => {
+        total += item.price * item.qty;
+        const itemEl = document.createElement('div');
+        itemEl.className = 'cart-item';
+        itemEl.innerHTML = `
+          <div class="cart-item-info">
+            <h4>${item.name} (${item.qty} шт)</h4>
+            <p>Соус: ${item.sauce}</p>
+          </div>
+          <div class="cart-item-price">${item.price * item.qty} ₽</div>
+        `;
+        cartItemsDiv.appendChild(itemEl);
+      });
+      cartTotalDiv.style.display = 'block';
+      cartTotalDiv.innerHTML = `Итого: <span>${total}</span> ₽`;
+    }
+
+    document.getElementById('cart-modal').classList.add('active');
+  }
+
+  function closeCart() {
+    document.getElementById('cart-modal').classList.remove('active');
+  }
+
+  // Оформление заказа (перевод в WhatsApp)
+  function orderCheckout() {
+    if (cart.length === 0) {
+      showNotification('Корзина пуста!');
+      return;
+    }
+    
+    let message = "Здравствуйте! Хочу сделать заказ в Шаурма 24:\n\n";
+    let total = 0;
+    
+    cart.forEach(item => {
+      message += `- ${item.name} (${item.qty} шт) [Соус: ${item.sauce}] = ${item.price * item.qty}₽\n`;
+      total += item.price * item.qty;
+    });
+    
+    message += `\nИтого: ${total}₽`;
+    
+    // Переводим на WhatsApp с номером из сайта
+    const encodedMsg = encodeURIComponent(message);
+    window.open(`https://wa.me/79394782936?text=${encodedMsg}`, '_blank');
+  }
+
+  // Всплывающее уведомление
   function showNotification(text) {
     const n = document.getElementById('notification');
     n.textContent = text;
@@ -580,16 +362,25 @@
     setTimeout(() => n.classList.remove('show'), 2000);
   }
 
+  // Закрытие модальных окон по клику вне контента
+  document.getElementById('sauce-modal').addEventListener('click', (e) => {
+    if (e.target.id === 'sauce-modal') closeSauceModal();
+  });
+  document.getElementById('cart-modal').addEventListener('click', (e) => {
+    if (e.target.id === 'cart-modal') closeCart();
+  });
+
   // Плавная прокрутка
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', e => {
       e.preventDefault();
       const target = document.querySelector(link.getAttribute('href'));
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth' });
-      }
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
     });
   });
+
+  // Инициализация
+  renderMenu();
 </script>
 
 </body>
